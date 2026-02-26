@@ -1,23 +1,15 @@
 import express, { Application } from "express";
 import cors from "cors";
-import { prisma } from "./app/lib/prisma";
+import { IndexRoutes } from "./app/routes";
 
 const app: Application = express();
 
 app.use(cors());
 app.use(express.json());
+app.use("/api/v1", IndexRoutes);
 
 app.get("/", (req, res) => {
     res.json({message: "hello"})
-})
-
-app.post("/", async(req, res) => {
-    const result = await prisma.specialty.create({
-        data: {
-            title: "Cardiology"
-        }
-    })
-    res.json({success: true, message: "Specialty created successfully", data: result})
 })
 
 export default app;
