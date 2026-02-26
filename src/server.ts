@@ -8,7 +8,7 @@ const bootstrap = () => {
       console.log("server is running on port 5000");
     });
   } catch (error) {
-    console.log("Failed to ");
+    console.log("Failed to start server", error);
   }
 };
 
