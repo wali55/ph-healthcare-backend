@@ -7,7 +7,6 @@ import status from "http-status";
 const createDoctor = catchAsync(
     async (req: Request, res: Response) => {
         const result = await userService.createDoctor(req.body);
-
         return sendResponse(res, {
             httpStatusCode: status.CREATED,
             success: true,
