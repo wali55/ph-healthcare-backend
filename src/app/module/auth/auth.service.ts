@@ -1,3 +1,5 @@
+import status from "http-status";
+import AppError from "../../errorHelpers/AppError";
 import { auth } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
 
@@ -24,7 +26,7 @@ const registerPatient = async (payload: RegisterPatient) => {
   });
 
   if (!data.ok) {
-    throw new Error("Failed to register patient");
+    throw new AppError(status.INTERNAL_SERVER_ERROR, "Failed to register patient");
   }
 
   const result = await data.json();
@@ -64,7 +66,7 @@ const loginPatient = async (payload: LoginPatient) => {
   });
 
   if (!data.ok) {
-    throw new Error("Failed to login patient");
+    throw new AppError(status.INTERNAL_SERVER_ERROR, "Failed to login patient");
   }
 
   return data;
