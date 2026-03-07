@@ -4,6 +4,7 @@ import { authService } from "./auth.service";
 import { sendResponse } from "../../shared/sendResponse";
 import { UserStatus } from "../../../generated/prisma/enums";
 import status from "http-status";
+import { tokenUtils } from "../../utils/token";
 
 const registerPatient = catchAsync(async (req: Request, res: Response) => {
   const {data, result} = await authService.registerPatient(req.body);
@@ -26,6 +27,26 @@ const loginPatient = catchAsync(async (req: Request, res: Response) => {
   res.setHeader("Set-Cookie", setCookie as string);
 
   const result = await response.json();
+
+  const accessToken = tokenUtils.getAccessToken({
+    userId: result?.user?.id,
+    role: result?.user?.role,
+    status: result?.user?.status,
+    email: result?.user?.email,
+    isDeleted: result?.user?.isDeleted,
+    emailVerified: result?.user?.emailVerified,
+    name: result?.user?.name,
+  });
+
+  const refreshToken = tokenUtils.getRefreshToken({
+    userId: result?.user?.id,
+    role: result?.user?.role,
+    status: result?.user?.status,
+    email: result?.user?.email,
+    isDeleted: result?.user?.isDeleted,
+    emailVerified: result?.user?.emailVerified,
+    name: result?.user?.name,
+  });
 
   if (result?.user?.status === UserStatus.BLOCKED) {
     return sendResponse(res, {
