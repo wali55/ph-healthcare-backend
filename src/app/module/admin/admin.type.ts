@@ -1,0 +1,6 @@
+export type UpdateAdminPayload = {
+    name?: string;
+    profilePhoto?: string;
+    contactNumber?: string;
+    address?: string;
+}

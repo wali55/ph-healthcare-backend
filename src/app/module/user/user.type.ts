@@ -18,3 +18,27 @@ export type CreateDoctor = {
     },
     specialties: string[]
 }
+
+export type CreateAdmin = {
+    password: string;
+    admin: {
+        name: string;
+        email: string;
+        profilePhoto?: string;
+        contactNumber?: string;
+        address?: string;
+        gender: Gender;
+    },
+}
+
+export type CreateSuperAdmin = {
+    password: string;
+    superAdmin: {
+        name: string;
+        email: string;
+        profilePhoto?: string;
+        contactNumber?: string;
+        address?: string;
+        gender: Gender;
+    },
+}
