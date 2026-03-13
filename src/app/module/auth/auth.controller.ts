@@ -7,10 +7,13 @@ import status from "http-status";
 import { tokenUtils } from "../../utils/token";
 
 const registerPatient = catchAsync(async (req: Request, res: Response) => {
-  const {data, result} = await authService.registerPatient(req.body);
+  const result = await authService.registerPatient(req.body);
 
-  const setCookie = data.headers.get("set-cookie");
-  res.setHeader("Set-Cookie", setCookie as string);
+  const { accessToken, refreshToken, token } = result;
+
+  tokenUtils.setAccessTokenCookie(res, accessToken);
+  tokenUtils.setRefreshTokenCookie(res, refreshToken);
+  tokenUtils.setBetterAuthSessionTokenCookie(res, token as string);
 
   return sendResponse(res, {
     httpStatusCode: status.CREATED,
@@ -21,32 +24,12 @@ const registerPatient = catchAsync(async (req: Request, res: Response) => {
 });
 
 const loginPatient = catchAsync(async (req: Request, res: Response) => {
-  const response = await authService.loginPatient(req.body);
+  const result = await authService.loginPatient(req.body);
+  const {accessToken, refreshToken, token} = result;
 
-  const setCookie = response.headers.get("set-cookie");
-  res.setHeader("Set-Cookie", setCookie as string);
-
-  const result = await response.json();
-
-  const accessToken = tokenUtils.getAccessToken({
-    userId: result?.user?.id,
-    role: result?.user?.role,
-    status: result?.user?.status,
-    email: result?.user?.email,
-    isDeleted: result?.user?.isDeleted,
-    emailVerified: result?.user?.emailVerified,
-    name: result?.user?.name,
-  });
-
-  const refreshToken = tokenUtils.getRefreshToken({
-    userId: result?.user?.id,
-    role: result?.user?.role,
-    status: result?.user?.status,
-    email: result?.user?.email,
-    isDeleted: result?.user?.isDeleted,
-    emailVerified: result?.user?.emailVerified,
-    name: result?.user?.name,
-  });
+  tokenUtils.setAccessTokenCookie(res, accessToken);
+  tokenUtils.setRefreshTokenCookie(res, refreshToken);
+  tokenUtils.setBetterAuthSessionTokenCookie(res, token);
 
   if (result?.user?.status === UserStatus.BLOCKED) {
     return sendResponse(res, {

@@ -4,7 +4,6 @@ import AppError from "../../errorHelpers/AppError";
 import { auth } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
 import { CreateDoctor } from "./user.type";
-import { stat } from "node:fs";
 
 const createDoctor = async (payload: CreateDoctor) => {
   const specialties: Specialty[] = [];

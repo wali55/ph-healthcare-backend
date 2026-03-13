@@ -42,4 +42,14 @@ export const auth = betterAuth({
         },
     }
   },
+
+  session: {
+    // 1 day
+    expiresIn: 60 * 60 * 24, // in sec 
+    updateAge: 60 * 60 * 24,
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 60 * 24,
+    }
+  }
 });
