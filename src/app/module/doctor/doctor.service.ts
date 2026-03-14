@@ -4,6 +4,9 @@ import { UpdateDoctorPayload } from "./doctor.type";
 
 const getAllDoctors = async () => {
   const result = await prisma.doctor.findMany({
+    where: {
+      isDeleted: false,
+    },
     include: {
       user: true,
       specialties: {
@@ -20,6 +23,7 @@ const getDoctorById = async (id: string) => {
   const result = await prisma.doctor.findUnique({
     where: {
       id,
+      isDeleted: false,
     },
     include: {
       user: true,

@@ -1,5 +1,5 @@
 model Specialty {
-  id                String            @id @default(uuid(7))
+  id                String            @id @default(uuid(7)) @db.Uuid
   title             String            @unique @db.VarChar(100)
   description       String?           @db.Text
   icon              String?           @db.VarChar(255)
@@ -15,10 +15,10 @@ model Specialty {
 }
 
 model DoctorSpecialty {
-  id          String    @id @default(uuid(7))
-  doctorId    String
+  id          String    @id @default(uuid(7)) @db.Uuid
+  doctorId    String    @db.Uuid
   doctor      Doctor    @relation(fields: [doctorId], references: [id])
-  specialtyId String
+  specialtyId String    @db.Uuid
   specialty   Specialty @relation(fields: [specialtyId], references: [id])
 
   @@unique([doctorId, specialtyId])

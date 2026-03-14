@@ -4,6 +4,9 @@ import { UpdateAdminPayload } from "./admin.type";
 
 const getAllAdmins = async () => {
   const result = await prisma.admin.findMany({
+    where: {
+      isDeleted: false,
+    },
     include: {
       user: true,
     },
@@ -15,6 +18,7 @@ const getAdminById = async (id: string) => {
   const result = await prisma.admin.findUnique({
     where: {
       id,
+      isDeleted: false,
     },
     include: {
       user: true,

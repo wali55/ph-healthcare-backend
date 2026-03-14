@@ -4,6 +4,9 @@ import { UpdateSuperAdminPayload } from "./superAdmin.type";
 
 const getAllSuperAdmins = async () => {
   const result = await prisma.superAdmin.findMany({
+    where: {
+      isDeleted: false,
+    },
     include: {
       user: true,
     },
@@ -15,6 +18,7 @@ const getSuperAdminById = async (id: string) => {
   const result = await prisma.superAdmin.findUnique({
     where: {
       id,
+      isDeleted: false,
     },
     include: {
       user: true,
