@@ -63,6 +63,12 @@ export const checkAuth =
             console.log("Session expiring soon");
           }
 
+          req.user = {
+            id: user.id,
+            email: user.email,
+            role: user.role,
+          };
+
           if (user.status === "BLOCKED" || user.status === "DELETED") {
             throw new AppError(
               status.UNAUTHORIZED,

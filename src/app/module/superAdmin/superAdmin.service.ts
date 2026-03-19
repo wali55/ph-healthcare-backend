@@ -88,6 +88,12 @@ const deleteSuperAdmin = async (id: string) => {
       },
     });
 
+    await tx.session.deleteMany({
+      where: {
+        userId: superAdminData.user.id,
+      },
+    });
+
     const superAdmin = await tx.superAdmin.findUnique({
       where: {
         id: superAdminData.id,

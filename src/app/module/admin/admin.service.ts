@@ -88,6 +88,12 @@ const deleteAdmin = async (id: string) => {
       },
     });
 
+    await tx.session.deleteMany({
+      where: {
+        userId: adminData.user.id,
+      },
+    });
+
     const admin = await tx.admin.findUnique({
       where: {
         id: adminData.id,
